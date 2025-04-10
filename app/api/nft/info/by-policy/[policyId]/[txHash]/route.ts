@@ -1,5 +1,6 @@
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 import { NextResponse } from 'next/server';
+import { ApiResponse } from '@/app/types/certificate';
 
 // Initialize Blockfrost API client
 const blockfrost = new BlockFrostAPI({

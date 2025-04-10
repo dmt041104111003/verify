@@ -1,13 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Certificate, ApiResponse } from './types/certificate';
 
 export default function Home() {
   const [policyId, setPolicyId] = useState('');
   const [txHash, setTxHash] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [certificate, setCertificate] = useState<any>(null);
+  const [certificate, setCertificate] = useState<Certificate | null>(null);
 
   // Get URL parameters on load
   useEffect(() => {
@@ -33,18 +34,22 @@ export default function Home() {
       setError(null);
 
       // Get NFT info using policy ID and transaction hash
-      const { data: nftData } = await axios.get(
+      const { data: nftData } = await axios.get<ApiResponse>(
         `/api/nft/info/by-policy/${pId}/${tHash}`
       );
 
       if (nftData.success) {
-        setCertificate({
-          policyId: nftData.policyId,
-          assetName: nftData.assetName,
-          courseTitle: nftData.courseTitle,
-          metadata: nftData.metadata,
-          mintTransaction: nftData.mintTransaction
-        });
+        if (nftData.policyId && nftData.assetName && nftData.courseTitle && nftData.metadata && nftData.mintTransaction) {
+          setCertificate({
+            policyId: nftData.policyId,
+            assetName: nftData.assetName,
+            courseTitle: nftData.courseTitle,
+            metadata: nftData.metadata,
+            mintTransaction: nftData.mintTransaction
+          });
+        } else {
+          setError('Invalid certificate data received');
+        }
       } else {
         setError('Could not find certificate NFT information');
       }

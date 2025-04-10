@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_PUBLIC_BLOCKFROST_PROJECT_ID = "preprodwAoQrS3Nc0RhHqm8awt9yISNlW9Z6TW6"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
